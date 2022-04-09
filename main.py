@@ -91,8 +91,7 @@ def runMultiprocessing(camera):
                         # QOS 0 - Once (not guaranteed)
                         # QOS 1 - At Least Once (guaranteed)
                         # QOS 2 - Only Once (guaranteed)
-                        mqttclient.publish("cammotion/" + camera['name'],
-                                           payload=cv2.imencode('.png', frame)[1].tobytes(), qos=0)
+                        #mqttclient.publish("cammotion/" + camera['name'], payload=cv2.imencode('.png', frame)[1].tobytes(), qos=0)
                         # case sensitive? make sure to use "ON" not "on"
                         mqttclient.publish("cammotion/" + camera['name'] + "/state", payload="ON",
                                            qos=0)
