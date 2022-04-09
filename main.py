@@ -1,6 +1,6 @@
 import datetime, time, cv2, multiprocessing
 import logging as log
-import paho.mqtt.client as paho
+import paho.mqtt.publish as publish
 import config
 
 
@@ -30,10 +30,6 @@ def runMultiprocessing(camera):
 
         logging.info(f"Resolution: {vs.get(cv2.CAP_PROP_FRAME_WIDTH)} x {vs.get(cv2.CAP_PROP_FRAME_HEIGHT)}")
         logging.info(f"{fps} FPS")
-
-        # mqtt setup
-        mqttclient = paho.Client()
-        mqttclient.connect(str(config.mqtt_ip), int(config.mqtt_port))
     except Exception as e:
         logging.error(e)
 
@@ -93,12 +89,11 @@ def runMultiprocessing(camera):
                         # QOS 2 - Only Once (guaranteed)
                         #mqttclient.publish("cammotion/" + camera['name'], payload=cv2.imencode('.png', frame)[1].tobytes(), qos=0)
                         # case sensitive? make sure to use "ON" not "on"
-                        mqttclient.publish("cammotion/" + camera['name'] + "/state", payload="ON",
-                                           qos=1)
+                        publish.single("cammotion/" + camera['name'] + "/state", payload="ON", qos=1, hostname=str(config.mqtt_ip), port=int(config.mqtt_port))
                     else:
                         logging.info("Motion end")
-                        mqttclient.publish("cammotion/" + camera['name'] + "/state", payload="OFF",
-                                           qos=1)
+                        publish.single("cammotion/" + camera['name'] + "/state", payload="OFF", qos=1, hostname=str(config.mqtt_ip), port=int(config.mqtt_port))
+
             time_delta = (datetime.datetime.now() - start_time).total_seconds() * 1000  # milliseconds
 
             #if time_delta > 0 and float(1000 / time_delta) < float(vs.get(cv2.CAP_PROP_FPS)) * 0.8:
