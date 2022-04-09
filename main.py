@@ -97,8 +97,10 @@ def runMultiprocessing(camera):
                         mqttclient.publish("cammotion/" + camera['name'] + "/state", payload="ON",
                                            qos=0)
                     else:
+                        logging.info("Motion end")
                         mqttclient.publish("cammotion/" + camera['name'] + "/state", payload="OFF",
                                            qos=0)
+            time.sleep(0.5)
             time_delta = (datetime.datetime.now() - start_time).total_seconds() * 1000  # milliseconds
 
             if time_delta > 0 and float(1000 / time_delta) < float(vs.get(cv2.CAP_PROP_FPS)) * 0.8:
