@@ -103,9 +103,9 @@ def runMultiprocessing(camera):
             time.sleep(0.5)
             time_delta = (datetime.datetime.now() - start_time).total_seconds() * 1000  # milliseconds
 
-            if time_delta > 0 and float(1000 / time_delta) < float(vs.get(cv2.CAP_PROP_FPS)) * 0.8:
-                logging.warning(f"Running at {1000 / time_delta} FPS, target is {vs.get(cv2.CAP_PROP_FPS)} FPS")
-                logging.warning("Not hitting the target FPS, consider reducing camera FPS or improving hardware.")
+            #if time_delta > 0 and float(1000 / time_delta) < float(vs.get(cv2.CAP_PROP_FPS)) * 0.8:
+             #   logging.warning(f"Running at {1000 / time_delta} FPS, target is {vs.get(cv2.CAP_PROP_FPS)} FPS")
+              #  logging.warning("Not hitting the target FPS, consider reducing camera FPS or improving hardware.")
         except Exception as e:
             logging.error(e)
             time.sleep(1)  # one second
